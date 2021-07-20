@@ -40,6 +40,9 @@ class ForComparison
   testResults: (fc2, comparator="===")->
     evalStr = "" + @asString + comparator + fc2.asString
     [evalStr, eval('(' + evalStr + ')')]
+  testResultsObjectIs: (fc2)->
+    evalStr = 'Object.is(' + @asString + ',' + fc2.asString + ')'
+    [evalStr, eval('(' + evalStr + ')')]
   toString: ->
     @asString
 
@@ -47,8 +50,8 @@ class ForComparison
 The values which are strings wrapped in backticks (`) are evaluated
 before being compared.
 ###
-values = [true, false, 1, 0, -1,
-  "`'true'`", "`'false'`", "`'1'`", "`'0'`", "`'-1'`", "",
+values = [true, false, 1, +0, -0, -1,
+  "`'true'`", "`'false'`", "`'1'`", "`'0'`", "`'-1'`", "", " ",
   "`null`", "`undefined`", "`[]`", "`{}`", [[]],
   [0], [1], "`parseFloat('nan')`"]
 
@@ -122,6 +125,24 @@ supportsCanvas = do ->
       $td.addClass("equal")
     expression = " if (#{comp.asString}) { /* #{if val then 'executes' else 'does not execute'} */ } "
     $("<td>", class: "expression").html(expression).appendTo($tr)
+  $table
+
+@buildComparisonTableForObjectIs = (values)->
+  comps = (new ForComparison(v) for v in values)
+  $table = $("<table>", class: "comparisons")
+  $headRow = $("<tr>").append("<td>").appendTo($table)
+  for comp in comps
+    $el = if supportsCanvas then rotateText(comp.asString) else $("<span>", class: "rotate", text: comp.asString)
+    $("<td>", class: "header col").html($el).appendTo($headRow)
+  for valX, x in comps
+    $tr = $("<tr>").appendTo($table)
+    $("<td>", class: "row header").text(valX.asString).appendTo($tr)
+    for valY, y in comps
+      td = $("<td>", class: "cell", html: "<div>&nbsp;</div>").appendTo($tr)
+      [evalStr, tf] = valX.testResultsObjectIs(valY)
+      td.attr("title", "#{evalStr} // #{tf}")
+      if tf
+        td.addClass("equal")
   $table
 
 rotateText = (txt, cHeight=80)->

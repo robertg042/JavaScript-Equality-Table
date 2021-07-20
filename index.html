@@ -1,16 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <html lang="en">
-<head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-	<title>JS Comparison Table</title>
-	<link rel="stylesheet" href="styles/simple.css" type="text/css" media="all" title="simple" charset="utf-8">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript" charset="utf-8"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript" src="js/comparison_table.js"></script>
-	
-<!--    Originally from here:
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>JS Comparison Table</title>
+		<link rel="stylesheet" href="styles/simple.css" type="text/css" media="all" title="simple" charset="utf-8">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.4.4/jquery.min.js" type="text/javascript"
+			charset="utf-8"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js" type="text/javascript"
+			charset="utf-8"></script>
+		<script type="text/javascript" src="js/comparison_table.js"></script>
+
+		<!--    Originally from here:
 	    http://blog.codekills.net/archives/89-Equality-in-JavaScript.html
 
 	    2013-Nov-11. Correcting issue where "[]===[]" was incorrectly marked as true.
@@ -18,63 +19,83 @@
 		Converted from this gist:
 		https://gist.github.com/761080
 	-->
-</head>
-<body>
+	</head>
 
-	<div id="tabs">
-		<ul>
-			<li>
-				<a href="#two-equals">
-					==
-				</a>
-			</li>
-			<li>
-				<a href="#three-equals">
-					===
-				</a>
-			</li>
-			<li>
-				<a href="#if-statement">
-					If()
-				</a>
-			</li>
-		</ul>
-		<div id="two-equals">
-			<h2>== <smaller>(negated: !=)</smaller></h2>
-			<p class="description">
-				When using two equals signs for JavaScript equality testing, some funky conversions take place.
-			</p>
+	<body>
+
+		<div id="tabs">
+			<ul>
+				<li>
+					<a href="#two-equals">
+						==
+					</a>
+				</li>
+				<li>
+					<a href="#three-equals">
+						===
+					</a>
+				</li>
+				<li>
+					<a href="#object-is">
+						Object.is()
+					</a>
+				</li>
+				<li>
+					<a href="#if-statement">
+						If()
+					</a>
+				</li>
+			</ul>
+			<div id="two-equals">
+				<h2>== <smaller>(negated: !=)</smaller>
+				</h2>
+				<p class="description">
+					When using two equals signs for JavaScript equality testing, some funky conversions take place.
+				</p>
+			</div>
+			<div id="three-equals">
+				<h2>=== <smaller>(negated: !==)</smaller>
+				</h2>
+				<p class="description">
+					When using three equals signs for JavaScript equality testing, everything is <b>as is</b>. Nothing gets
+					converted before being evaluated.
+				</p>
+			</div>
+			<div id="object-is">
+				<h2>Object.is(val1, val2)</h2>
+				<p class="description">
+					When using <code>Object.is()</code> method, comparisons use SameValue proceduce introduced in ES2015.
+					It's similar to === comparison, but it differs by treating +0 and -0 values as not equal and NaN values as
+					equal to each other.
+				<pre><code>
+Object.is(+0, -0) // false
+Object.is(NaN, NaN) // true
+					</code></pre>
+				</p>
+			</div>
+			<div id="if-statement">
+				<h2>A standard IF statement. If(<i>value</i>) {/*- green -*/} else { /*- white -*/ }</h2>
+				<p>Note: This row does not match up with any of the rows in the other table.</p>
+			</div>
+			<div style="padding: 2px 20px">
+				<h4>Moral of the story:</h4>
+				<p>
+					Always use 3 equals unless you have a good reason to use 2.
+				</p>
+			</div>
 		</div>
-		<div id="three-equals">
-			<h2>=== <smaller>(negated: !==)</smaller></h2>
-			<p class="description">
-				When using three equals signs for JavaScript equality testing, everything is <b>as is</b>. Nothing gets converted before being evaluated.
-			</p>
-		</div>
-		<div id="if-statement">
-			<h2>A standard IF statement. If(<i>value</i>) {/*- green -*/} else { /*- white -*/ }</h2>
-			<p>Note: This row does not match up with any of the rows in the other table.</p>
-		</div>
-		<div style="padding: 2px 20px">
-			<h4>Moral of the story:</h4>
-			<p>
-				Always use 3 equals unless you have a good reason to use 2.
-			</p>
-		</div>
-	</div>
 
-    <!-- see values.js for a list of values which are compared in the table -->
-    <script src="values.js" type="text/javascript" charset="utf-8"></script>
+		<!-- see values.js for a list of values which are compared in the table -->
+		<script src="values.js" type="text/javascript" charset="utf-8"></script>
 
-    <script type="text/javascript" charset="utf-8">
+		<script type="text/javascript" charset="utf-8">
 
-	buildComparisonTable(values, "==").appendTo("#two-equals")
-	buildComparisonTable(values, "===").appendTo("#three-equals")
-	buildComparisonTableForIf(values).appendTo("#if-statement")
+			buildComparisonTable(values, "==").appendTo("#two-equals")
+			buildComparisonTable(values, "===").appendTo("#three-equals")
+			buildComparisonTableForObjectIs(values, "Object.is()").appendTo("#object-is")
+			buildComparisonTableForIf(values).appendTo("#if-statement")
 
-	$('#tabs').tabs();
-    $("<li><a href='unified/'>New link: view everything in one table</a></li>").appendTo("#tabs ul");
+		</script>
+	</body>
 
-    </script>
-</body>
 </html>
