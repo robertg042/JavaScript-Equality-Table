@@ -1,0 +1,20 @@
+{
+  "name": "JavaScript-Equality-Table",
+  "version": "1.0.0",
+  "description": "JavaScript equality comparison is a crazy thing, sometimes. When in doubt, use three equals signs.",
+  "main": "values.js",
+  "scripts": {
+    "watch": "coffee --watch -o ./js --compile coffee/comparison_table.coffee",
+    "build": "coffee -o ./js --compile coffee/comparison_table.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "gh-priv:robertg042/JavaScript-Equality-Table.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "coffeescript": "^2.5.1"
+  }
+}
